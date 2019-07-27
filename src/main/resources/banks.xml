@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Banks>
+    <deposit-bank>
+        <name>ccc</name>
+        <country>belarus</country>
+        <deposit>CONSUMER</deposit>
+        <depositor>aaa</depositor>
+        <constrains>1</constrains>
+    </deposit-bank>
+</Banks>
