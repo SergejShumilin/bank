@@ -1,10 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Banks>
+<Banks xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns="http://by.javatr.bank"
+       xsi:schemaLocation="http://by.javatr.bank banks.xsd">
     <deposit-bank>
         <name>ccc</name>
         <country>belarus</country>
-        <deposit>CONSUMER</deposit>
+        <deposit>URGENT</deposit>
         <depositor>aaa</depositor>
         <constrains>1</constrains>
     </deposit-bank>
+    <deposit-bank>
+        <name>ddd</name>
+        <country>belarus</country>
+        <deposit>ACCUMULATIVE</deposit>
+        <depositor>bbb</depositor>
+        <constrains>2</constrains>
+    </deposit-bank>
+    <credit-bank>
+        <name>aaa</name>
+        <country>belarus</country>
+        <credit>CONSUMER</credit>
+        <profitability>10</profitability>
+        <amount>1000</amount>
+    </credit-bank>
+    <credit-bank>
+        <name>bbb</name>
+        <country>belarus</country>
+        <credit>LEASING</credit>
+        <profitability>5</profitability>
+        <amount>5000</amount>
+    </credit-bank>
 </Banks>

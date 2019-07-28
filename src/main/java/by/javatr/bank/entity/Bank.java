@@ -45,4 +45,13 @@ public class Bank {
         result = 31 * result + (country != null ? country.hashCode() : 0);
         return result;
     }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("Bank{");
+        sb.append("name='").append(name).append('\'');
+        sb.append(", country='").append(country).append('\'');
+        sb.append('}');
+        return sb.toString();
+    }
 }

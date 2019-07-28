@@ -7,7 +7,10 @@ public enum BankEnum {
     COUNTRY("country"),
     DEPOSIT("deposit"),
     DEPOSITOR("depositor"),
-    CONSTRAINS("constrains");
+    CONSTRAINS("constrains"),
+    CREDIT("credit"),
+    PROFITABILITY("profitability"),
+    AMOUNT("amount");
 
     private String value;
 

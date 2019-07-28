@@ -1,7 +1,11 @@
 package by.javatr.bank.entity;
 
+import by.javatr.bank.entity.type.DepositType;
+
+import java.util.StringJoiner;
+
 public class DepositBank extends Bank {
-    private String deposit;
+    private DepositType deposit;
     private String depositor;
     private int constrains;
 
@@ -9,18 +13,18 @@ public class DepositBank extends Bank {
 
     }
 
-    public DepositBank(String name, String country, String deposit, String depositor, int constrains) {
+    public DepositBank(String name, String country, DepositType deposit, String depositor, int constrains) {
         super(name, country);
         this.deposit = deposit;
         this.depositor = depositor;
         this.constrains = constrains;
     }
 
-    public String getDeposit() {
+    public DepositType getDeposit() {
         return deposit;
     }
 
-    public void setDeposit(String deposit) {
+    public void setDeposit(DepositType deposit) {
         this.deposit = deposit;
     }
 
@@ -74,7 +78,9 @@ public class DepositBank extends Bank {
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("DepositBank{");
-        sb.append("deposit='").append(deposit).append('\'');
+        sb.append("name='").append(getName()).append('\'');
+        sb.append(", country='").append(getCountry()).append('\'');
+        sb.append(", deposit='").append(deposit).append('\'');
         sb.append(", depositor='").append(depositor).append('\'');
         sb.append(", constrains=").append(constrains);
         sb.append('}');

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+        targetNamespace="http://by.javatr.bank"
+        xmlns:tns="http://by.javatr.bank"
+        elementFormDefault="qualified">
+
+    <element name="Banks">
+        <complexType>
+            <sequence>
+                <element name="deposit-bank"
+                         type="tns:deposit-bank"
+                         minOccurs="2"
+                         maxOccurs="unbounded"/>
+                <element name="credit-bank"
+                         type="tns:credit-bank"
+                         minOccurs="2"
+                         maxOccurs="unbounded"/>
+            </sequence>
+
+        </complexType>
+    </element>
+
+    <complexType name="credit-bank">
+        <sequence>
+            <element name="name" type="string"/>
+            <element name="country" type="string"/>
+            <element name="credit" type="string"/>
+            <element name="profitability" type="integer"/>
+            <element name="amount" type="integer"/>
+        </sequence>
+    </complexType>
+    <complexType name="deposit-bank">
+        <sequence>
+            <element name="name" type="string"/>
+            <element name="country" type="string"/>
+            <element name="deposit" type="string"/>
+            <element name="depositor" type="string"/>
+            <element name="constrains" type="integer"/>
+        </sequence>
+    </complexType>
+
+</schema>
+

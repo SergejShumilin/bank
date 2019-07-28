@@ -1,6 +1,7 @@
-package by.javatr.bank.handler;
+package by.javatr.bank.handler.builder;
 
 import by.javatr.bank.entity.Bank;
+import by.javatr.bank.handler.BankSaxHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
@@ -10,12 +11,12 @@ import java.util.Set;
 
 public class BankSaxBuilder {
     private Set<Bank> banks;
-    private BankHandler sh;
+    private BankSaxHandler sh;
     private XMLReader reader;
 
     public BankSaxBuilder() {
 // создание SAX-анализатора
-        sh = new BankHandler();
+        sh = new BankSaxHandler();
         try {
 // создание объекта-обработчика
             reader = XMLReaderFactory.createXMLReader();
