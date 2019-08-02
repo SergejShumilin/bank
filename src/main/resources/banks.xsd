@@ -16,7 +16,6 @@
                          minOccurs="2"
                          maxOccurs="unbounded"/>
             </sequence>
-
         </complexType>
     </element>
 
@@ -28,6 +27,7 @@
             <element name="profitability" type="integer"/>
             <element name="amount" type="integer"/>
         </sequence>
+        <attribute type="string" name="registration" use="required"/>
     </complexType>
     <complexType name="deposit-bank">
         <sequence>
@@ -37,6 +37,7 @@
             <element name="depositor" type="string"/>
             <element name="constrains" type="integer"/>
         </sequence>
+        <attribute type="int" name="registration" use="required"/>
     </complexType>
 
 </schema>

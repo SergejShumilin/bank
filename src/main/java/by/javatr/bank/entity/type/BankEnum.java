@@ -3,6 +3,7 @@ package by.javatr.bank.entity.type;
 public enum BankEnum {
     BANKS("banks"),
     BANK("bank"),
+    REGISTRATION("registration"),
     NAME("name"),
     COUNTRY("country"),
     DEPOSIT("deposit"),

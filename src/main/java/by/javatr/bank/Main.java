@@ -1,23 +1,42 @@
 package by.javatr.bank;
 
-import by.javatr.bank.entity.Bank;
-import by.javatr.bank.handler.builder.BankDomBuilder;
-import by.javatr.bank.handler.builder.BankSaxBuilder;
+import by.javatr.bank.factory.BuilderFactory;
+import by.javatr.bank.parser.BankParser;
+import by.javatr.bank.parser.impl.BankJaxbParser;
+import by.javatr.bank.parser.type.BuilderType;
+import by.javatr.bank.storage.Banks;
 
-import java.util.Set;
+import javax.xml.bind.JAXBException;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws JAXBException {
         String path = ".\\src\\main\\resources\\banks.xml";
-//        BankSaxBuilder saxBuilder = new BankSaxBuilder();
-//        saxBuilder.buildSetBanks(path);
-//        Set<Bank> banks = saxBuilder.getBanks();
-//        for (Bank b :banks) {
-//            System.out.println(b);
-//        }
 
-        BankDomBuilder domBuilder = new BankDomBuilder();
-        domBuilder.buildSetBanks(path);
-        System.out.println(domBuilder.getBanks());
+        BuilderFactory factory = new BuilderFactory();
+
+//        BankParser saxBuilder = factory.create(BuilderType.SAX);
+//        saxBuilder.parse(path);
+//        System.out.println(saxBuilder.getBanks());
+//
+//        BankParser domBuilder = factory.create(BuilderType.DOM);
+//        domBuilder.parse(path);
+//        System.out.println(domBuilder.getBanks());
+
+        BankJaxbParser parser = new BankJaxbParser();
+//        Banks parse = parser.parse(path);
+//        System.out.println(parse);
+
+        parser.unmarsh(path);
+//        try {
+//            JAXBContext jc = JAXBContext.newInstance(Banks.class);
+//            Unmarshaller u = jc.createUnmarshaller();
+//            FileReader reader = new FileReader(path);
+//            Banks banks = (Banks) u.unmarshal(reader);
+//            System.out.println(banks);
+//        } catch (JAXBException e) {
+//            e.printStackTrace();
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        }
     }
 }

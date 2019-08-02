@@ -9,31 +9,32 @@ import by.javatr.bank.entity.type.DepositType;
 import org.xml.sax.Attributes;
 import org.xml.sax.helpers.DefaultHandler;
 
-import java.util.EnumSet;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class BankSaxHandler extends DefaultHandler {
-    private Set<Bank> banks;
-
+    private List<Bank> banks;
     private Bank current = null;
     private BankEnum currentEnum = null;
-    private EnumSet<BankEnum> withText;
+    private EnumSet<BankEnum> enumSet;
+
     public BankSaxHandler() {
-        banks = new HashSet<>();
-        withText = EnumSet.range(BankEnum.NAME, BankEnum.AMOUNT);
+        banks = new ArrayList<>();
+        enumSet = EnumSet.range(BankEnum.NAME, BankEnum.AMOUNT);
     }
-    public Set<Bank> getBanks() {
+    public List<Bank> getBanks() {
         return banks;
     }
+
     public void startElement(String uri, String localName, String qName, Attributes attrs) {
         if ("deposit-bank".equals(localName)) {
             current = new DepositBank();
+            current.setRegistrationNumber(Integer.parseInt(attrs.getValue(0)));
         } else if ("credit-bank".equals(localName)){
             current = new CreditBank();
+            current.setRegistrationNumber(Integer.parseInt(attrs.getValue(0)));
         } else {
             BankEnum temp = BankEnum.valueOf(localName.toUpperCase());
-            if (withText.contains(temp)) {
+            if (enumSet.contains(temp)) {
                 currentEnum = temp;
             }
         }
