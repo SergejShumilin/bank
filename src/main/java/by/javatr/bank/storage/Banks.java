@@ -45,7 +45,6 @@ public class Banks {
         if (o == null || getClass() != o.getClass()){
             return false;
         }
-
         Banks banks = (Banks) o;
         return list != null ? list.equals(banks.list) : banks.list == null;
     }

@@ -1,8 +1,10 @@
 package by.javatr.bank.parser.impl;
 
 import by.javatr.bank.entity.Bank;
+import by.javatr.bank.exception.FileIsNotValidException;
 import by.javatr.bank.handler.BankSaxHandler;
 import by.javatr.bank.parser.BankParser;
+import by.javatr.bank.validator.XmlValidator;
 import org.apache.log4j.Logger;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
@@ -17,8 +19,11 @@ public class BankSaxParser implements BankParser {
     private List<Bank> banks;
     private BankSaxHandler handler;
     private XMLReader reader;
+    private XmlValidator validator;
 
-    public BankSaxParser() {
+
+    public BankSaxParser(XmlValidator validator) {
+        this.validator = validator;
         handler = new BankSaxHandler();
         try {
             reader = XMLReaderFactory.createXMLReader();
@@ -27,19 +32,22 @@ public class BankSaxParser implements BankParser {
             LOGGER.info(e.getMessage(), e);
         }
     }
+
     public List<Bank> getBanks() {
         return banks;
     }
 
     @Override
-    public void parse(String fileName) {
-        try {
-            reader.parse(fileName);
-        } catch (SAXException e) {
-            LOGGER.info(e.getMessage(), e);
-        } catch (IOException e) {
-            LOGGER.info(e.getMessage(), e);
+    public List<Bank> parse(String fileName) throws FileIsNotValidException {
+        if (!validator.isValid(fileName)) {
+            throw new FileIsNotValidException("File is not valid");
         }
-        banks = handler.getBanks();
+            try {
+                reader.parse(fileName);
+            } catch (SAXException | IOException e) {
+                LOGGER.info(e.getMessage(), e);
+            }
+            banks = handler.getBanks();
+        return banks;
     }
 }

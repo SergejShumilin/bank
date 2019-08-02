@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Banks>
+<!--        xmlns="http://test.com">-->
 <!--    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"-->
-<!--       xmlns="http://by.javatr.bank"-->
-<!--       xsi:schemaLocation="http://by.javatr.bank banks.xsd">-->
+<!--       xmlns="http://www.example.com/Banks"-->
+<!--       xsi:schemaLocation="http://www.example.com/Banks bank.xsd">-->
     <deposit-bank registration="1">
         <name>ccc</name>
         <country>belarus</country>

@@ -28,10 +28,12 @@ public class BankSaxHandler extends DefaultHandler {
     public void startElement(String uri, String localName, String qName, Attributes attrs) {
         if ("deposit-bank".equals(localName)) {
             current = new DepositBank();
-            current.setRegistrationNumber(Integer.parseInt(attrs.getValue(0)));
+            int registrationNumber = Integer.parseInt(attrs.getValue(0));
+            current.setRegistrationNumber(registrationNumber);
         } else if ("credit-bank".equals(localName)){
             current = new CreditBank();
-            current.setRegistrationNumber(Integer.parseInt(attrs.getValue(0)));
+            int registrationNumber = Integer.parseInt(attrs.getValue(0));
+            current.setRegistrationNumber(registrationNumber);
         } else {
             BankEnum temp = BankEnum.valueOf(localName.toUpperCase());
             if (enumSet.contains(temp)) {
@@ -48,32 +50,37 @@ public class BankSaxHandler extends DefaultHandler {
         }
     }
     public void characters(char[] ch, int start, int length) {
-        String s = new String(ch, start, length).trim();
+        String valueTag = new String(ch, start, length).trim();
         if (currentEnum != null) {
             switch (currentEnum) {
                 case NAME:
-                    current.setName(s);
+                    current.setName(valueTag);
                     break;
                 case COUNTRY:
-                    current.setCountry(s);
+                    current.setCountry(valueTag);
                     break;
                 case DEPOSIT:
-                    ((DepositBank)current).setDeposit(DepositType.valueOf(s));
+                    DepositType depositType = DepositType.valueOf(valueTag);
+                    ((DepositBank)current).setDeposit(depositType);
                     break;
                 case DEPOSITOR:
-                    ((DepositBank)current).setDepositor(s);
+                    ((DepositBank)current).setDepositor(valueTag);
                     break;
                 case CONSTRAINS:
-                    ((DepositBank)current).setConstrains(Integer.parseInt(s));
+                    int constrains = Integer.parseInt(valueTag);
+                    ((DepositBank)current).setConstrains(constrains);
                     break;
                 case CREDIT:
-                    ((CreditBank)current).setCredit(CreditType.valueOf(s));
+                    CreditType creditType = CreditType.valueOf(valueTag);
+                    ((CreditBank)current).setCredit(creditType);
                     break;
                 case PROFITABILITY:
-                    ((CreditBank)current).setProfitability(Integer.parseInt(s));
+                    int profitability = Integer.parseInt(valueTag);
+                    ((CreditBank)current).setProfitability(profitability);
                     break;
                 case AMOUNT:
-                    ((CreditBank)current).setAmount(Integer.parseInt(s));
+                    int amount = Integer.parseInt(valueTag);
+                    ((CreditBank)current).setAmount(amount);
                     break;
                 default:
                     throw new EnumConstantNotPresentException(

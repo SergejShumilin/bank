@@ -5,7 +5,9 @@ import by.javatr.bank.entity.CreditBank;
 import by.javatr.bank.entity.DepositBank;
 import by.javatr.bank.entity.type.CreditType;
 import by.javatr.bank.entity.type.DepositType;
+import by.javatr.bank.exception.FileIsNotValidException;
 import by.javatr.bank.parser.BankParser;
+import by.javatr.bank.validator.XmlValidator;
 import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -23,12 +25,12 @@ import java.util.List;
 public class BankDomParser implements BankParser {
     private static final Logger LOGGER = Logger.getLogger(BankDomParser.class);
     private List<Bank> banks;
-
+    private XmlValidator validator;
     private DocumentBuilder docBuilder;
 
-    public BankDomParser() {
+    public BankDomParser(XmlValidator validator) {
+        this.validator = validator;
         this.banks = new ArrayList<>();
-// создание DOM-анализатора
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         try {
             docBuilder = factory.newDocumentBuilder();
@@ -42,57 +44,80 @@ public class BankDomParser implements BankParser {
     }
 
     @Override
-    public void parse(String fileName) {
-        Document doc = null;
-        try {
-            doc = docBuilder.parse(fileName);
-            Element root = doc.getDocumentElement();
-            NodeList depositBankList = root.getElementsByTagName("deposit-bank");
-            for (int i = 0; i < depositBankList.getLength(); i++) {
-                Element bankElement = (Element) depositBankList.item(i);
-                Bank bank = buildBank(bankElement);
-                banks.add(bank);
-            }
-            NodeList creditBankList = root.getElementsByTagName("credit-bank");
-            for (int i = 0; i < creditBankList.getLength(); i++) {
-                Element bankElement = (Element) creditBankList.item(i);
-                Bank bank = buildBank(bankElement);
-                banks.add(bank);
-            }
-        } catch (IOException e) {
-            LOGGER.info(e.getMessage(), e);
-        } catch (SAXException e) {
-            LOGGER.info(e.getMessage(), e);
+    public List<Bank> parse(String fileName) throws FileIsNotValidException {
+        if (!validator.isValid(fileName)) {
+            throw new FileIsNotValidException("File is not valid");
         }
-    }
+                Document doc = null;
+                try {
+                    doc = docBuilder.parse(fileName);
+                    Element root = doc.getDocumentElement();
+                    NodeList depositBankList = root.getElementsByTagName("deposit-bank");
+                    for (int i = 0; i < depositBankList.getLength(); i++) {
+                        Element bankElement = (Element) depositBankList.item(i);
+                        Bank bank = buildBank(bankElement);
+                        banks.add(bank);
+                    }
+                    NodeList creditBankList = root.getElementsByTagName("credit-bank");
+                    for (int i = 0; i < creditBankList.getLength(); i++) {
+                        Element bankElement = (Element) creditBankList.item(i);
+                        Bank bank = buildBank(bankElement);
+                        banks.add(bank);
+                    }
+                } catch (IOException | SAXException e) {
+                    LOGGER.info(e.getMessage(), e);
+                }
+
+                return banks;
+        }
 
     private Bank buildBank(Element bankElement) {
         Bank bank = null;
         String tagName = bankElement.getTagName();
         if ("deposit-bank".equals(tagName)) {
-            bank = new DepositBank();
-            bank.setRegistrationNumber(Integer.parseInt(bankElement.getAttribute("registration")));
-            bank.setName(getElementTextContent(bankElement, "name"));
-            bank.setCountry(getElementTextContent(bankElement, "country"));
-            DepositType deposit = DepositType.valueOf(getElementTextContent(bankElement, "deposit"));
-            ((DepositBank) bank).setDeposit(deposit);
-            ((DepositBank) bank).setDepositor(getElementTextContent(bankElement, "depositor"));
-            int constrains = Integer.parseInt(getElementTextContent(bankElement, "constrains"));
-            ((DepositBank) bank).setConstrains(constrains);
+            bank = buildDepositBank(bankElement);
         } else if ("credit-bank".equals(tagName)) {
-            bank = new CreditBank();
-            bank.setRegistrationNumber(Integer.parseInt(bankElement.getAttribute("registration")));
-            bank.setName(getElementTextContent(bankElement, "name"));
-            bank.setCountry(getElementTextContent(bankElement, "country"));
-            CreditType credit = CreditType.valueOf(getElementTextContent(bankElement, "credit"));
-            ((CreditBank) bank).setCredit(credit);
-            int profitability = Integer.parseInt(getElementTextContent(
-                    bankElement, "profitability"));
-            ((CreditBank) bank).setProfitability(profitability);
-            int amount = Integer.parseInt(getElementTextContent(
-                    bankElement, "amount"));
-            ((CreditBank) bank).setAmount(amount);
+           bank = buildCreditBank(bankElement);
         }
+        return bank;
+    }
+
+    private Bank buildDepositBank(Element bankElement){
+        Bank bank = new DepositBank();
+        int registration = Integer.parseInt(bankElement.getAttribute("registration"));
+        bank.setRegistrationNumber(registration);
+        String name = getElementTextContent(bankElement, "name");
+        bank.setName(name);
+        String country = getElementTextContent(bankElement, "country");
+        bank.setCountry(country);
+        String depositType = getElementTextContent(bankElement, "deposit");
+        DepositType deposit = DepositType.valueOf(depositType);
+        ((DepositBank) bank).setDeposit(deposit);
+        String depositorName = getElementTextContent(bankElement, "depositor");
+        ((DepositBank) bank).setDepositor(depositorName);
+        String valueConstrains = getElementTextContent(bankElement, "constrains");
+        int constrains = Integer.parseInt(valueConstrains);
+        ((DepositBank) bank).setConstrains(constrains);
+        return bank;
+    }
+
+    private Bank buildCreditBank(Element bankElement){
+        Bank bank = new CreditBank();
+        int registration = Integer.parseInt(bankElement.getAttribute("registration"));
+        bank.setRegistrationNumber(registration);
+        String name = getElementTextContent(bankElement, "name");
+        bank.setName(name);
+        String country = getElementTextContent(bankElement, "country");
+        bank.setCountry(country);
+        String creditType = getElementTextContent(bankElement, "credit");
+        CreditType credit = CreditType.valueOf(creditType);
+        ((CreditBank) bank).setCredit(credit);
+        String valueProfitability = getElementTextContent(bankElement, "profitability");
+        int profitability = Integer.parseInt(valueProfitability);
+        ((CreditBank) bank).setProfitability(profitability);
+        String valueAmount = getElementTextContent(bankElement, "amount");
+        int amount = Integer.parseInt(valueAmount);
+        ((CreditBank) bank).setAmount(amount);
         return bank;
     }
 

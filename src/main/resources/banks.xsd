@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schema xmlns="http://www.w3.org/2001/XMLSchema"
-        targetNamespace="http://by.javatr.bank"
-        xmlns:tns="http://by.javatr.bank"
+        targetNamespace="http://www.example.com/bank"
+        xmlns:tns="http://www.example.com/bank"
         elementFormDefault="qualified">
 
     <element name="Banks">
